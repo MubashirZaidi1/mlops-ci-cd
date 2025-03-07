@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USERNAME = 'MubashirZaidi1'
+        IMAGE_NAME = 'mlops-ci-cd'
+        EMAIL = 'admin@example.com'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'master', url: 'https://github.com/MubashirZaidi1/mlops-ci-cd.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat "docker build -t %DOCKER_HUB_USERNAME%/%IMAGE_NAME%:latest ."
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_HUB_PASSWORD')]) {
+                    bat "echo %DOCKER_HUB_PASSWORD% | docker login -u %DOCKER_HUB_USERNAME% --password-stdin"
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                bat "docker push %DOCKER_HUB_USERNAME%/%IMAGE_NAME%:latest"
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                bat "docker run -d -p 5000:5000 %DOCKER_HUB_USERNAME%/%IMAGE_NAME%:latest"
+            }
+        }
+
+        stage('Send Admin Notification') {
+            steps {
+                mail to: "%EMAIL%",
+                     subject: "Deployment Successful",
+                     body: "The ML API has been successfully deployed via Jenkins."
+            }
+        }
+    }
+}
