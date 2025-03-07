@@ -43,13 +43,10 @@ pipeline {
 
         stage('Send Admin Notification') {
             steps {
-                mail to: 'mobizaidi123@gmail.com',
-                subject: 'Jenkins Build Status',
-                body: 'Pipeline completed successfully!',
-                smtpHost: 'smtp.gmail.com',
-                smtpPort: '587',
-                useTLS: true,
-                replyTo: 'mobizaidi123@gmail.com'
+                mail to: 'your-email@example.com',
+     subject: 'Jenkins Build Status',
+     body: 'Pipeline completed successfully!'
+
 
             }
         }
