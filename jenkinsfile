@@ -43,9 +43,14 @@ pipeline {
 
         stage('Send Admin Notification') {
             steps {
-                mail to: "%EMAIL%",
-                     subject: "Deployment Successful",
-                     body: "The ML API has been successfully deployed via Jenkins."
+                mail to: 'mobizaidi123@gmail.com',
+                subject: 'Jenkins Build Status',
+                body: 'Pipeline completed successfully!',
+                smtpHost: 'smtp.gmail.com',
+                smtpPort: '587',
+                useTLS: true,
+                replyTo: 'mobizaidi123@gmail.com'
+
             }
         }
     }
