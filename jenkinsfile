@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_USERNAME = 'MubashirZaidi1'
+        DOCKER_HUB_USERNAME = 'mubashirzaidi'
         IMAGE_NAME = 'mlops-ci-cd'
         EMAIL = 'admin@example.com'
     }
